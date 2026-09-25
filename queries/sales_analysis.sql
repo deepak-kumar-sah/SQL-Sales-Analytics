@@ -1,251 +1,264 @@
+```sql
 -- ============================================================
 -- SQL Sales Analytics Project
+-- Sales Analysis Queries
 -- Database: MySQL
+-- Total Queries: 80
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS sales_analytics;
 USE sales_analytics;
 
--- ------------------------------------------------------------
--- 1. Create table
--- ------------------------------------------------------------
-DROP TABLE IF EXISTS sales;
 
-CREATE TABLE sales (
-    order_id INT PRIMARY KEY,
-    order_date DATE,
-    customer_name VARCHAR(50),
-    product VARCHAR(50),
-    category VARCHAR(30),
-    city VARCHAR(30),
-    quantity INT,
-    price DECIMAL(10,2),
-    revenue DECIMAL(12,2)
-);
-
--- ------------------------------------------------------------
--- 2. Insert sample sales data
--- ------------------------------------------------------------
-INSERT INTO sales
-(order_id, order_date, customer_name, product, category, city, quantity, price, revenue)
-VALUES
-(1001, '2025-01-05', 'Rahul', 'Laptop', 'Electronics', 'Delhi', 2, 55000, 110000),
-(1002, '2025-01-07', 'Aman', 'Mouse', 'Electronics', 'Mumbai', 5, 800, 4000),
-(1003, '2025-01-10', 'Priya', 'Keyboard', 'Electronics', 'Delhi', 3, 1500, 4500),
-(1004, '2025-01-12', 'Rohit', 'Chair', 'Furniture', 'Pune', 4, 3500, 14000),
-(1005, '2025-01-15', 'Neha', 'Table', 'Furniture', 'Mumbai', 2, 7000, 14000),
-(1006, '2025-01-18', 'Amit', 'Laptop', 'Electronics', 'Pune', 1, 55000, 55000),
-(1007, '2025-01-20', 'Sneha', 'Headphones', 'Electronics', 'Delhi', 4, 2500, 10000),
-(1008, '2025-01-22', 'Vikas', 'Chair', 'Furniture', 'Delhi', 3, 3500, 10500),
-(1009, '2025-01-25', 'Pooja', 'Table', 'Furniture', 'Pune', 1, 7000, 7000),
-(1010, '2025-01-27', 'Karan', 'Mouse', 'Electronics', 'Mumbai', 8, 800, 6400),
-(1011, '2025-01-29', 'Anjali', 'Laptop', 'Electronics', 'Mumbai', 2, 55000, 110000),
-(1012, '2025-02-01', 'Sahil', 'Keyboard', 'Electronics', 'Pune', 5, 1500, 7500),
-(1013, '2025-02-03', 'Riya', 'Chair', 'Furniture', 'Mumbai', 2, 3500, 7000),
-(1014, '2025-02-05', 'Arjun', 'Table', 'Furniture', 'Delhi', 3, 7000, 21000),
-(1015, '2025-02-07', 'Simran', 'Headphones', 'Electronics', 'Pune', 6, 2500, 15000);
-
--- ------------------------------------------------------------
--- 3. Basic Analysis
--- ------------------------------------------------------------
+-- ============================================================
+-- 1. BASIC SQL
+-- ============================================================
 
 -- Q1. View all sales data
-SELECT * FROM sales;
-
--- Q2. Selected columns
-SELECT order_id, customer_name, product, revenue
+SELECT *
 FROM sales;
 
--- Q3. Unique cities
+-- Q2. Select specific columns
+SELECT
+    order_id,
+    customer_name,
+    product,
+    revenue
+FROM sales;
+
+-- Q3. Find unique cities
 SELECT DISTINCT city
 FROM sales;
 
--- Q4. Unique categories
+-- Q4. Find unique categories
 SELECT DISTINCT category
 FROM sales;
 
--- Q5. Total number of orders
+-- Q5. Count total orders
 SELECT COUNT(*) AS total_orders
 FROM sales;
 
--- Q6. Orders from Delhi
+-- Q6. Find orders from Delhi
 SELECT *
 FROM sales
 WHERE city = 'Delhi';
 
--- Q7. Electronics orders
+-- Q7. Find Electronics orders
 SELECT *
 FROM sales
 WHERE category = 'Electronics';
 
--- Q8. Orders with revenue above 50,000
+-- Q8. Find orders with revenue above 50,000
 SELECT *
 FROM sales
 WHERE revenue > 50000;
 
--- Q9. Orders with quantity >= 4
+-- Q9. Find orders with quantity greater than or equal to 4
 SELECT *
 FROM sales
 WHERE quantity >= 4;
 
--- Q10. Mumbai Electronics orders
+-- Q10. Find Mumbai Electronics orders
 SELECT *
 FROM sales
 WHERE city = 'Mumbai'
   AND category = 'Electronics';
 
--- ------------------------------------------------------------
--- 4. ORDER BY and LIMIT
--- ------------------------------------------------------------
 
--- Q11. Revenue high to low
+-- ============================================================
+-- 2. ORDER BY AND LIMIT
+-- ============================================================
+
+-- Q11. Sort orders by revenue from highest to lowest
 SELECT *
 FROM sales
 ORDER BY revenue DESC;
 
--- Q12. Revenue low to high
+-- Q12. Sort orders by revenue from lowest to highest
 SELECT *
 FROM sales
 ORDER BY revenue ASC;
 
--- Q13. Highest revenue order
+-- Q13. Find the highest revenue order
 SELECT *
 FROM sales
 ORDER BY revenue DESC
 LIMIT 1;
 
--- Q14. Top 3 orders by revenue
+-- Q14. Find the top 3 orders by revenue
 SELECT *
 FROM sales
 ORDER BY revenue DESC
 LIMIT 3;
 
--- Q15. Lowest 3 orders by revenue
+-- Q15. Find the lowest 3 orders by revenue
 SELECT *
 FROM sales
 ORDER BY revenue ASC
 LIMIT 3;
 
--- Q16. Highest price
+-- Q16. Find the highest-priced order
 SELECT *
 FROM sales
 ORDER BY price DESC
 LIMIT 1;
 
--- Q17. Quantity high to low
+-- Q17. Sort orders by quantity from highest to lowest
 SELECT *
 FROM sales
 ORDER BY quantity DESC;
 
--- ------------------------------------------------------------
--- 5. Aggregate Functions
--- ------------------------------------------------------------
 
--- Q18. Total revenue
-SELECT SUM(revenue) AS total_revenue
+-- ============================================================
+-- 3. AGGREGATE FUNCTIONS
+-- ============================================================
+
+-- Q18. Calculate total revenue
+SELECT
+    SUM(revenue) AS total_revenue
 FROM sales;
 
--- Q19. Average revenue
-SELECT AVG(revenue) AS average_revenue
+-- Q19. Calculate average revenue per order
+SELECT
+    AVG(revenue) AS average_revenue
 FROM sales;
 
--- Q20. Maximum revenue
-SELECT MAX(revenue) AS max_revenue
+-- Q20. Find maximum revenue
+SELECT
+    MAX(revenue) AS max_revenue
 FROM sales;
 
--- Q21. Minimum revenue
-SELECT MIN(revenue) AS min_revenue
+-- Q21. Find minimum revenue
+SELECT
+    MIN(revenue) AS min_revenue
 FROM sales;
 
--- Q22. Total quantity sold
-SELECT SUM(quantity) AS total_quantity
+-- Q22. Calculate total quantity sold
+SELECT
+    SUM(quantity) AS total_quantity
 FROM sales;
 
--- Q23. Average price
-SELECT AVG(price) AS average_price
+-- Q23. Calculate average product price
+SELECT
+    AVG(price) AS average_price
 FROM sales;
 
--- Q24. Total orders
-SELECT COUNT(*) AS total_orders
+-- Q24. Count total orders
+SELECT
+    COUNT(DISTINCT order_id) AS total_orders
 FROM sales;
 
--- ------------------------------------------------------------
--- 6. GROUP BY
--- ------------------------------------------------------------
+
+-- ============================================================
+-- 4. GROUP BY
+-- ============================================================
 
 -- Q25. Revenue by category
-SELECT category, SUM(revenue) AS total_revenue
+SELECT
+    category,
+    SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY category;
+GROUP BY category
+ORDER BY total_revenue DESC;
 
 -- Q26. Revenue by city
-SELECT city, SUM(revenue) AS total_revenue
+SELECT
+    city,
+    SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY city;
+GROUP BY city
+ORDER BY total_revenue DESC;
 
 -- Q27. Revenue by product
-SELECT product, SUM(revenue) AS total_revenue
+SELECT
+    product,
+    SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY product;
+GROUP BY product
+ORDER BY total_revenue DESC;
 
--- Q28. Quantity by category
-SELECT category, SUM(quantity) AS total_quantity
+-- Q28. Quantity sold by category
+SELECT
+    category,
+    SUM(quantity) AS total_quantity
 FROM sales
-GROUP BY category;
+GROUP BY category
+ORDER BY total_quantity DESC;
 
--- Q29. Quantity by city
-SELECT city, SUM(quantity) AS total_quantity
+-- Q29. Quantity sold by city
+SELECT
+    city,
+    SUM(quantity) AS total_quantity
 FROM sales
-GROUP BY city;
+GROUP BY city
+ORDER BY total_quantity DESC;
 
--- Q30. Order count by product
-SELECT product, COUNT(*) AS order_count
+-- Q30. Number of orders by product
+SELECT
+    product,
+    COUNT(DISTINCT order_id) AS order_count
 FROM sales
-GROUP BY product;
+GROUP BY product
+ORDER BY order_count DESC;
 
 -- Q31. Average revenue by city
-SELECT city, AVG(revenue) AS average_revenue
+SELECT
+    city,
+    ROUND(AVG(revenue), 2) AS average_revenue
 FROM sales
-GROUP BY city;
+GROUP BY city
+ORDER BY average_revenue DESC;
 
 -- Q32. Average revenue by category
-SELECT category, AVG(revenue) AS average_revenue
+SELECT
+    category,
+    ROUND(AVG(revenue), 2) AS average_revenue
 FROM sales
-GROUP BY category;
+GROUP BY category
+ORDER BY average_revenue DESC;
 
--- ------------------------------------------------------------
--- 7. HAVING
--- ------------------------------------------------------------
 
--- Q33. Categories with revenue > 50,000
-SELECT category, SUM(revenue) AS total_revenue
+-- ============================================================
+-- 5. HAVING
+-- ============================================================
+
+-- Q33. Categories with total revenue above 50,000
+SELECT
+    category,
+    SUM(revenue) AS total_revenue
 FROM sales
 GROUP BY category
 HAVING SUM(revenue) > 50000;
 
--- Q34. Cities with revenue > 50,000
-SELECT city, SUM(revenue) AS total_revenue
+-- Q34. Cities with total revenue above 50,000
+SELECT
+    city,
+    SUM(revenue) AS total_revenue
 FROM sales
 GROUP BY city
 HAVING SUM(revenue) > 50000;
 
--- Q35. Products with total quantity > 5
-SELECT product, SUM(quantity) AS total_quantity
+-- Q35. Products with total quantity greater than 5
+SELECT
+    product,
+    SUM(quantity) AS total_quantity
 FROM sales
 GROUP BY product
 HAVING SUM(quantity) > 5;
 
 -- Q36. Cities with more than 3 orders
-SELECT city, COUNT(*) AS total_orders
+SELECT
+    city,
+    COUNT(DISTINCT order_id) AS total_orders
 FROM sales
 GROUP BY city
-HAVING COUNT(*) > 3;
+HAVING COUNT(DISTINCT order_id) > 3;
 
--- ------------------------------------------------------------
--- 8. CASE Statements
--- ------------------------------------------------------------
 
--- Q37. Revenue category
+-- ============================================================
+-- 6. CASE STATEMENTS
+-- ============================================================
+
+-- Q37. Categorize orders by revenue
 SELECT
     order_id,
     customer_name,
@@ -256,7 +269,7 @@ SELECT
     END AS revenue_category
 FROM sales;
 
--- Q38. Quantity category
+-- Q38. Categorize orders by quantity
 SELECT
     order_id,
     customer_name,
@@ -267,7 +280,7 @@ SELECT
     END AS quantity_category
 FROM sales;
 
--- Q39. Price category
+-- Q39. Categorize products by price
 SELECT
     order_id,
     product,
@@ -278,78 +291,94 @@ SELECT
     END AS price_category
 FROM sales;
 
--- ------------------------------------------------------------
--- 9. Date Analysis
--- ------------------------------------------------------------
 
--- Q40. January 2025 orders
+-- ============================================================
+-- 7. DATE ANALYSIS
+-- ============================================================
+
+-- Q40. Find January 2025 orders
 SELECT *
 FROM sales
 WHERE order_date >= '2025-01-01'
   AND order_date < '2025-02-01';
 
--- Q41. February 2025 orders
+-- Q41. Find February 2025 orders
 SELECT *
 FROM sales
 WHERE order_date >= '2025-02-01'
   AND order_date < '2025-03-01';
 
--- Q42. Orders after January 15, 2025
+-- Q42. Find orders after January 15, 2025
 SELECT *
 FROM sales
 WHERE order_date > '2025-01-15';
 
--- Q43. January 2025 total revenue
-SELECT SUM(revenue) AS january_revenue
+-- Q43. Calculate January 2025 revenue
+SELECT
+    SUM(revenue) AS january_revenue
 FROM sales
 WHERE order_date >= '2025-01-01'
   AND order_date < '2025-02-01';
 
--- Q44. Month-wise revenue
+-- Q44. Calculate month-wise revenue
 SELECT
     YEAR(order_date) AS year,
     MONTH(order_date) AS month,
     SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY YEAR(order_date), MONTH(order_date)
-ORDER BY year, month;
+GROUP BY
+    YEAR(order_date),
+    MONTH(order_date)
+ORDER BY
+    year,
+    month;
 
--- ------------------------------------------------------------
--- 10. Advanced Aggregation
--- ------------------------------------------------------------
+
+-- ============================================================
+-- 8. ADVANCED AGGREGATION
+-- ============================================================
 
 -- Q45. Highest revenue order in each city
-SELECT city, MAX(revenue) AS highest_revenue
+SELECT
+    city,
+    MAX(revenue) AS highest_revenue
 FROM sales
 GROUP BY city;
 
 -- Q46. Highest revenue order in each category
-SELECT category, MAX(revenue) AS highest_revenue
+SELECT
+    category,
+    MAX(revenue) AS highest_revenue
 FROM sales
 GROUP BY category;
 
 -- Q47. Average price by product
-SELECT product, AVG(price) AS average_price
+SELECT
+    product,
+    ROUND(AVG(price), 2) AS average_price
 FROM sales
-GROUP BY product;
+GROUP BY product
+ORDER BY average_price DESC;
 
--- Q48. City order count and total revenue
+-- Q48. Order count and total revenue by city
 SELECT
     city,
-    COUNT(*) AS total_orders,
+    COUNT(DISTINCT order_id) AS total_orders,
     SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY city;
+GROUP BY city
+ORDER BY total_revenue DESC;
 
--- Q49. Category quantity and revenue
+-- Q49. Quantity and revenue by category
 SELECT
     category,
     SUM(quantity) AS total_quantity,
     SUM(revenue) AS total_revenue
 FROM sales
-GROUP BY category;
+GROUP BY category
+ORDER BY total_revenue DESC;
 
--- Q50. Product with highest total revenue
+-- Q50. Product with the highest total revenue
 SELECT
     product,
     SUM(revenue) AS total_revenue
@@ -358,11 +387,12 @@ GROUP BY product
 ORDER BY total_revenue DESC
 LIMIT 1;
 
--- ------------------------------------------------------------
--- 11. Subqueries
--- ------------------------------------------------------------
 
--- Q51. Orders above average revenue
+-- ============================================================
+-- 9. SUBQUERIES
+-- ============================================================
+
+-- Q51. Find orders above average revenue
 SELECT *
 FROM sales
 WHERE revenue > (
@@ -370,7 +400,7 @@ WHERE revenue > (
     FROM sales
 );
 
--- Q52. Highest revenue order(s)
+-- Q52. Find order(s) with the highest revenue
 SELECT *
 FROM sales
 WHERE revenue = (
@@ -378,15 +408,17 @@ WHERE revenue = (
     FROM sales
 );
 
--- Q53. Products priced above average price
-SELECT DISTINCT product, price
+-- Q53. Find products with price above average price
+SELECT DISTINCT
+    product,
+    price
 FROM sales
 WHERE price > (
     SELECT AVG(price)
     FROM sales
 );
 
--- Q54. Delhi orders above Delhi average revenue
+-- Q54. Find Delhi orders above Delhi's average revenue
 SELECT *
 FROM sales
 WHERE city = 'Delhi'
@@ -396,7 +428,7 @@ WHERE city = 'Delhi'
       WHERE city = 'Delhi'
   );
 
--- Q55. Record(s) with highest price
+-- Q55. Find order(s) with the highest price
 SELECT *
 FROM sales
 WHERE price = (
@@ -404,19 +436,22 @@ WHERE price = (
     FROM sales
 );
 
--- ------------------------------------------------------------
--- 12. Window Functions
--- ------------------------------------------------------------
 
--- Q56. Overall revenue rank
+-- ============================================================
+-- 10. WINDOW FUNCTIONS
+-- ============================================================
+
+-- Q56. Rank orders by overall revenue
 SELECT
     order_id,
     customer_name,
     revenue,
-    RANK() OVER (ORDER BY revenue DESC) AS revenue_rank
+    RANK() OVER (
+        ORDER BY revenue DESC
+    ) AS revenue_rank
 FROM sales;
 
--- Q57. Revenue rank within category
+-- Q57. Rank orders by revenue within each category
 SELECT
     order_id,
     customer_name,
@@ -428,7 +463,7 @@ SELECT
     ) AS category_rank
 FROM sales;
 
--- Q58. Revenue rank within city
+-- Q58. Rank orders by revenue within each city
 SELECT
     order_id,
     customer_name,
@@ -440,7 +475,7 @@ SELECT
     ) AS city_rank
 FROM sales;
 
--- Q59. Running total revenue
+-- Q59. Calculate running total revenue
 SELECT
     order_id,
     order_date,
@@ -448,10 +483,10 @@ SELECT
     revenue,
     SUM(revenue) OVER (
         ORDER BY order_date, order_id
-    ) AS running_total
+    ) AS running_total_revenue
 FROM sales;
 
--- Q60. Category total revenue on each row
+-- Q60. Calculate total category revenue for each row
 SELECT
     order_id,
     order_date,
@@ -463,9 +498,10 @@ SELECT
     ) AS category_total_revenue
 FROM sales;
 
--- ------------------------------------------------------------
--- 13. Data Analyst Queries
--- ------------------------------------------------------------
+
+-- ============================================================
+-- 11. DATA ANALYST QUERIES
+-- ============================================================
 
 -- Q61. Top 3 products by total revenue
 SELECT
@@ -476,7 +512,7 @@ GROUP BY product
 ORDER BY total_revenue DESC
 LIMIT 3;
 
--- Q62. City with highest total revenue
+-- Q62. City with the highest total revenue
 SELECT
     city,
     SUM(revenue) AS total_revenue
@@ -485,7 +521,7 @@ GROUP BY city
 ORDER BY total_revenue DESC
 LIMIT 1;
 
--- Q63. Category with highest total revenue
+-- Q63. Category with the highest total revenue
 SELECT
     category,
     SUM(revenue) AS total_revenue
@@ -494,12 +530,15 @@ GROUP BY category
 ORDER BY total_revenue DESC
 LIMIT 1;
 
--- Q64. Average Order Value (AOV)
+-- Q64. Calculate Average Order Value (AOV)
 SELECT
-    SUM(revenue) / COUNT(DISTINCT order_id) AS AOV
+    ROUND(
+        SUM(revenue) / COUNT(DISTINCT order_id),
+        2
+    ) AS average_order_value
 FROM sales;
 
--- Q65. Product revenue contribution %
+-- Q65. Product revenue contribution percentage
 SELECT
     product,
     SUM(revenue) AS total_revenue,
@@ -509,9 +548,10 @@ SELECT
         2
     ) AS revenue_percentage
 FROM sales
-GROUP BY product;
+GROUP BY product
+ORDER BY revenue_percentage DESC;
 
--- Q66. City revenue contribution %
+-- Q66. City revenue contribution percentage
 SELECT
     city,
     SUM(revenue) AS total_revenue,
@@ -519,9 +559,10 @@ SELECT
         SUM(revenue) * 100.0 /
         (SELECT SUM(revenue) FROM sales),
         2
-    ) AS contribution_revenue
+    ) AS revenue_percentage
 FROM sales
-GROUP BY city;
+GROUP BY city
+ORDER BY revenue_percentage DESC;
 
 -- Q67. Orders above average revenue
 SELECT *
@@ -531,7 +572,7 @@ WHERE revenue > (
     FROM sales
 );
 
--- Q68. Bulk orders
+-- Q68. Find bulk orders
 SELECT *
 FROM sales
 WHERE quantity >= 5;
@@ -539,7 +580,7 @@ WHERE quantity >= 5;
 -- Q69. Electronics total and average revenue
 SELECT
     SUM(revenue) AS total_revenue,
-    AVG(revenue) AS average_revenue
+    ROUND(AVG(revenue), 2) AS average_revenue
 FROM sales
 WHERE category = 'Electronics';
 
@@ -550,24 +591,28 @@ FROM sales
 WHERE city = 'Delhi'
   AND category = 'Electronics';
 
--- ------------------------------------------------------------
--- 14. Interview-Level Queries
--- ------------------------------------------------------------
 
--- Q71. Second highest revenue
+-- ============================================================
+-- 12. INTERVIEW-LEVEL QUERIES
+-- ============================================================
+
+-- Q71. Find the second-highest revenue order
 SELECT *
 FROM sales
 ORDER BY revenue DESC
 LIMIT 1 OFFSET 1;
 
--- Q72. Second highest price
+-- Q72. Find the second-highest price
 SELECT *
 FROM sales
 ORDER BY price DESC
 LIMIT 1 OFFSET 1;
 
--- Q73. Highest revenue product/order in each city
-SELECT city, product, revenue
+-- Q73. Highest revenue order in each city
+SELECT
+    city,
+    product,
+    revenue
 FROM (
     SELECT
         city,
@@ -581,8 +626,11 @@ FROM (
 ) AS ranked_sales
 WHERE rnk = 1;
 
--- Q74. Highest revenue product/order in each category
-SELECT product, category, revenue
+-- Q74. Highest revenue order in each category
+SELECT
+    product,
+    category,
+    revenue
 FROM (
     SELECT
         product,
@@ -596,14 +644,16 @@ FROM (
 ) AS ranked_sales
 WHERE rnk = 1;
 
--- Q75. Cities with both Electronics and Furniture
-SELECT city
+-- Q75. Cities that have both Electronics and Furniture
+SELECT
+    city
 FROM sales
 GROUP BY city
 HAVING COUNT(DISTINCT category) = 2;
 
--- Q76. Customers who purchased Laptop
-SELECT DISTINCT customer_name
+-- Q76. Customers who purchased a Laptop
+SELECT DISTINCT
+    customer_name
 FROM sales
 WHERE product = 'Laptop';
 
@@ -615,7 +665,7 @@ FROM sales
 GROUP BY product
 HAVING COUNT(DISTINCT city) > 1;
 
--- Q78. Product with highest total quantity
+-- Q78. Product with the highest total quantity sold
 SELECT
     product,
     SUM(quantity) AS total_quantity
@@ -624,22 +674,28 @@ GROUP BY product
 ORDER BY total_quantity DESC
 LIMIT 1;
 
--- Q79. City with highest average order value
+-- Q79. City with the highest average order value
 SELECT
     city,
-    AVG(revenue) AS average_order_value
+    ROUND(AVG(revenue), 2) AS average_order_value
 FROM sales
 GROUP BY city
 ORDER BY average_order_value DESC
 LIMIT 1;
 
--- Q80. Final sales analysis
+-- Q80. Final city-level sales analysis
 SELECT
     city,
-    COUNT(*) AS total_orders,
+    COUNT(DISTINCT order_id) AS total_orders,
     SUM(quantity) AS total_quantity,
     SUM(revenue) AS total_revenue,
-    AVG(revenue) AS avg_revenue
+    ROUND(AVG(revenue), 2) AS average_order_revenue
 FROM sales
 GROUP BY city
 ORDER BY total_revenue DESC;
+
+
+-- ============================================================
+-- END OF SALES ANALYSIS
+-- ============================================================
+```
